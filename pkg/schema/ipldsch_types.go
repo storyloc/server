@@ -20,39 +20,185 @@ var _ datamodel.Node = nil // suppress errors when this dependency is not refere
 var Type typeSlab
 
 type typeSlab struct {
-	Bytes            _Bytes__Prototype
-	Bytes__Repr      _Bytes__ReprPrototype
-	Communites       _Communites__Prototype
-	Communites__Repr _Communites__ReprPrototype
-	Community        _Community__Prototype
-	Community__Repr  _Community__ReprPrototype
-	Image            _Image__Prototype
-	Image__Repr      _Image__ReprPrototype
-	Int              _Int__Prototype
-	Int__Repr        _Int__ReprPrototype
-	String           _String__Prototype
-	String__Repr     _String__ReprPrototype
-	World            _World__Prototype
-	World__Repr      _World__ReprPrototype
+	Activity                  _Activity__Prototype
+	Activity__Repr            _Activity__ReprPrototype
+	Audio                     _Audio__Prototype
+	Audio__Repr               _Audio__ReprPrototype
+	Audios                    _Audios__Prototype
+	Audios__Repr              _Audios__ReprPrototype
+	Bool                      _Bool__Prototype
+	Bool__Repr                _Bool__ReprPrototype
+	Bytes                     _Bytes__Prototype
+	Bytes__Repr               _Bytes__ReprPrototype
+	Chat                      _Chat__Prototype
+	Chat__Repr                _Chat__ReprPrototype
+	Communities               _Communities__Prototype
+	Communities__Repr         _Communities__ReprPrototype
+	Community                 _Community__Prototype
+	Community__Repr           _Community__ReprPrototype
+	Company                   _Company__Prototype
+	Company__Repr             _Company__ReprPrototype
+	Connection                _Connection__Prototype
+	Connection__Repr          _Connection__ReprPrototype
+	Content                   _Content__Prototype
+	Content__Repr             _Content__ReprPrototype
+	DAO                       _DAO__Prototype
+	DAO__Repr                 _DAO__ReprPrototype
+	Decision                  _Decision__Prototype
+	Decision__Repr            _Decision__ReprPrototype
+	Event                     _Event__Prototype
+	Event__Repr               _Event__ReprPrototype
+	Float                     _Float__Prototype
+	Float__Repr               _Float__ReprPrototype
+	GeoPosition               _GeoPosition__Prototype
+	GeoPosition__Repr         _GeoPosition__ReprPrototype
+	Group                     _Group__Prototype
+	Group__Repr               _Group__ReprPrototype
+	Image                     _Image__Prototype
+	Image__Repr               _Image__ReprPrototype
+	Int                       _Int__Prototype
+	Int__Repr                 _Int__ReprPrototype
+	Interest                  _Interest__Prototype
+	Interest__Repr            _Interest__ReprPrototype
+	Interests                 _Interests__Prototype
+	Interests__Repr           _Interests__ReprPrototype
+	Link                      _Link__Prototype
+	Link__Repr                _Link__ReprPrototype
+	Location                  _Location__Prototype
+	Location__Repr            _Location__ReprPrototype
+	LocationOfInterest        _LocationOfInterest__Prototype
+	LocationOfInterest__Repr  _LocationOfInterest__ReprPrototype
+	Locations                 _Locations__Prototype
+	Locations__Repr           _Locations__ReprPrototype
+	LocationsOfInterest       _LocationsOfInterest__Prototype
+	LocationsOfInterest__Repr _LocationsOfInterest__ReprPrototype
+	Page                      _Page__Prototype
+	Page__Repr                _Page__ReprPrototype
+	Profile                   _Profile__Prototype
+	Profile__Repr             _Profile__ReprPrototype
+	Profiles                  _Profiles__Prototype
+	Profiles__Repr            _Profiles__ReprPrototype
+	Project                   _Project__Prototype
+	Project__Repr             _Project__ReprPrototype
+	Stories                   _Stories__Prototype
+	Stories__Repr             _Stories__ReprPrototype
+	Story                     _Story__Prototype
+	Story__Repr               _Story__ReprPrototype
+	StoryCollection           _StoryCollection__Prototype
+	StoryCollection__Repr     _StoryCollection__ReprPrototype
+	String                    _String__Prototype
+	String__Repr              _String__ReprPrototype
+	Tag                       _Tag__Prototype
+	Tag__Repr                 _Tag__ReprPrototype
+	Tags                      _Tags__Prototype
+	Tags__Repr                _Tags__ReprPrototype
+	Task                      _Task__Prototype
+	Task__Repr                _Task__ReprPrototype
+	Template                  _Template__Prototype
+	Template__Repr            _Template__ReprPrototype
+	World                     _World__Prototype
+	World__Repr               _World__ReprPrototype
 }
 
 // --- type definitions follow ---
+
+// Activity matches the IPLD Schema type "Activity".  It has struct type-kind, and may be interrogated like map kind.
+type Activity = *_Activity
+type _Activity struct {
+}
+
+// Audio matches the IPLD Schema type "Audio".  It has struct type-kind, and may be interrogated like map kind.
+type Audio = *_Audio
+type _Audio struct {
+	Data _Bytes
+	Date _Int
+}
+
+// Audios matches the IPLD Schema type "Audios".  It has list kind.
+type Audios = *_Audios
+type _Audios struct {
+	x []_Audio
+}
+
+// Bool matches the IPLD Schema type "Bool".  It has bool kind.
+type Bool = *_Bool
+type _Bool struct{ x bool }
 
 // Bytes matches the IPLD Schema type "Bytes".  It has bytes kind.
 type Bytes = *_Bytes
 type _Bytes struct{ x []byte }
 
-// Communites matches the IPLD Schema type "Communites".  It has list kind.
-type Communites = *_Communites
-type _Communites struct {
+// Chat matches the IPLD Schema type "Chat".  It has struct type-kind, and may be interrogated like map kind.
+type Chat = *_Chat
+type _Chat struct {
+}
+
+// Communities matches the IPLD Schema type "Communities".  It has list kind.
+type Communities = *_Communities
+type _Communities struct {
 	x []_Community
 }
 
 // Community matches the IPLD Schema type "Community".  It has struct type-kind, and may be interrogated like map kind.
 type Community = *_Community
 type _Community struct {
-	Name  _String
-	Image _Image__Maybe
+	Name    _String
+	Members _Profiles__Maybe
+	Tags    _Tags__Maybe
+}
+
+// Company matches the IPLD Schema type "Company".  It has struct type-kind, and may be interrogated like map kind.
+type Company = *_Company
+type _Company struct {
+}
+
+// Connection matches the IPLD Schema type "Connection".  It has struct type-kind, and may be interrogated like map kind.
+type Connection = *_Connection
+type _Connection struct {
+}
+
+// Content matches the IPLD Schema type "Content".  It has struct type-kind, and may be interrogated like map kind.
+type Content = *_Content
+type _Content struct {
+	Task            _Task
+	Decision        _Decision
+	Page            _Page
+	Chat            _Chat
+	Event           _Event
+	Activity        _Activity
+	Story           _Story
+	StoryCollection _StoryCollection
+}
+
+// DAO matches the IPLD Schema type "DAO".  It has struct type-kind, and may be interrogated like map kind.
+type DAO = *_DAO
+type _DAO struct {
+}
+
+// Decision matches the IPLD Schema type "Decision".  It has struct type-kind, and may be interrogated like map kind.
+type Decision = *_Decision
+type _Decision struct {
+}
+
+// Event matches the IPLD Schema type "Event".  It has struct type-kind, and may be interrogated like map kind.
+type Event = *_Event
+type _Event struct {
+}
+
+// Float matches the IPLD Schema type "Float".  It has float kind.
+type Float = *_Float
+type _Float struct{ x float64 }
+
+// GeoPosition matches the IPLD Schema type "GeoPosition".  It has struct type-kind, and may be interrogated like map kind.
+type GeoPosition = *_GeoPosition
+type _GeoPosition struct {
+	Longitude _Float
+	Latitude  _Float
+}
+
+// Group matches the IPLD Schema type "Group".  It has struct type-kind, and may be interrogated like map kind.
+type Group = *_Group
+type _Group struct {
 }
 
 // Image matches the IPLD Schema type "Image".  It has struct type-kind, and may be interrogated like map kind.
@@ -62,16 +208,138 @@ type _Image struct {
 	Size _Int
 }
 
-// Int matches the IPLD Schema type "Int".  It has int kind.
+// Int matches the IPLD Schema type "Int".  It has float kind.
 type Int = *_Int
-type _Int struct{ x int64 }
+type _Int struct{ x float64 }
+
+// Interest matches the IPLD Schema type "Interest".  It has struct type-kind, and may be interrogated like map kind.
+type Interest = *_Interest
+type _Interest struct {
+	Tag        _Tag
+	Experience _Int
+}
+
+// Interests matches the IPLD Schema type "Interests".  It has list kind.
+type Interests = *_Interests
+type _Interests struct {
+	x []_Interest
+}
+
+// Link matches the IPLD Schema type "Link".  It has link kind.
+type Link = *_Link
+type _Link struct{ x datamodel.Link }
+
+// Location matches the IPLD Schema type "Location".  It has struct type-kind, and may be interrogated like map kind.
+type Location = *_Location
+type _Location struct {
+	Name _String
+}
+
+// LocationOfInterest matches the IPLD Schema type "LocationOfInterest".  It has struct type-kind, and may be interrogated like map kind.
+type LocationOfInterest = *_LocationOfInterest
+type _LocationOfInterest struct {
+	History  _Locations
+	Current  _Location
+	Planning _Locations
+}
+
+// Locations matches the IPLD Schema type "Locations".  It has list kind.
+type Locations = *_Locations
+type _Locations struct {
+	x []_Location
+}
+
+// LocationsOfInterest matches the IPLD Schema type "LocationsOfInterest".  It has list kind.
+type LocationsOfInterest = *_LocationsOfInterest
+type _LocationsOfInterest struct {
+	x []_LocationOfInterest
+}
+
+// Page matches the IPLD Schema type "Page".  It has struct type-kind, and may be interrogated like map kind.
+type Page = *_Page
+type _Page struct {
+}
+
+// Profile matches the IPLD Schema type "Profile".  It has struct type-kind, and may be interrogated like map kind.
+type Profile = *_Profile
+type _Profile struct {
+	Name      _String
+	Address   _String
+	Image     _Image
+	Locations _LocationsOfInterest
+	Position  _GeoPosition
+	Interests _Interests
+}
+
+// Profiles matches the IPLD Schema type "Profiles".  It has list kind.
+type Profiles = *_Profiles
+type _Profiles struct {
+	x []_Profile
+}
+
+// Project matches the IPLD Schema type "Project".  It has struct type-kind, and may be interrogated like map kind.
+type Project = *_Project
+type _Project struct {
+}
+
+// Stories matches the IPLD Schema type "Stories".  It has list kind.
+type Stories = *_Stories
+type _Stories struct {
+	x []_Story
+}
+
+// Story matches the IPLD Schema type "Story".  It has struct type-kind, and may be interrogated like map kind.
+type Story = *_Story
+type _Story struct {
+	Owner       _Profile
+	Date        _Int
+	Image       _Image
+	GeoPosition _GeoPosition
+	Recordings  _Audios
+	Tags        _Tags
+	IsPublic    _Bool
+	Retention   _Int
+}
+
+// StoryCollection matches the IPLD Schema type "StoryCollection".  It has struct type-kind, and may be interrogated like map kind.
+type StoryCollection = *_StoryCollection
+type _StoryCollection struct {
+	Name          _String
+	Stories       _Stories
+	StartLocation _Location
+}
 
 // String matches the IPLD Schema type "String".  It has string kind.
 type String = *_String
 type _String struct{ x string }
 
+// Tag matches the IPLD Schema type "Tag".  It has struct type-kind, and may be interrogated like map kind.
+type Tag = *_Tag
+type _Tag struct {
+	Name _String
+}
+
+// Tags matches the IPLD Schema type "Tags".  It has list kind.
+type Tags = *_Tags
+type _Tags struct {
+	x []_Tag
+}
+
+// Task matches the IPLD Schema type "Task".  It has struct type-kind, and may be interrogated like map kind.
+type Task = *_Task
+type _Task struct {
+}
+
+// Template matches the IPLD Schema type "Template".  It has struct type-kind, and may be interrogated like map kind.
+type Template = *_Template
+type _Template struct {
+	Group   _Group
+	DAO     _DAO
+	Company _Company
+	Project _Project
+}
+
 // World matches the IPLD Schema type "World".  It has struct type-kind, and may be interrogated like map kind.
 type World = *_World
 type _World struct {
-	Communites _Communites
 }

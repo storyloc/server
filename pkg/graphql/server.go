@@ -47,7 +47,7 @@ func handleGraphQL(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 				"Communities": &graphql.Field{
-					Type: Communites__type,
+					Type: Communities__type,
 					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 						fmt.Println("implement Communities")
 						return nil, nil
