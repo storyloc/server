@@ -5,12 +5,9 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path"
-
-	gengraphql "github.com/ipld/go-ipld-graphql/gen"
 	"github.com/ipld/go-ipld-prime/schema"
 	gengo "github.com/ipld/go-ipld-prime/schema/gen/go"
+	"os"
 )
 
 func main() {
@@ -189,5 +186,4 @@ func main() {
 	}
 
 	gengo.Generate(os.Args[1], "schema", ts, adjCfg)
-	gengraphql.Generate(path.Join(os.Args[1], "..", "graphql"), "graphql", ts, "schema", "github.com/storyloc/server/pkg/schema")
 }
