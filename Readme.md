@@ -1,10 +1,10 @@
-# usage
+# Usage
 
-1. Run server
+## Run server
 
 `go run cmd/server/main.go server --graphiql=true``
 
-2. Open Browser
+## Open Browser
 
 on `localhost:3000`
 
@@ -38,6 +38,9 @@ Query Variables: (needs correct ID)
 }
 ```
 
-3. Check Data 
+## Check Data 
 
 - file system: `ls -la ~/.storylock/`
+
+# Usage with IPFS
+todo
