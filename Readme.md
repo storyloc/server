@@ -44,3 +44,15 @@ Query Variables: (needs correct ID)
 
 # Usage with IPFS
 todo
+
+
+# Download schema
+
+To download the schema install Apollo CLI.
+On macOS use `brew install apollo-cli`, there are some fixed issued included. 
+
+Donwload schema.json by running
+
+`apollo schema:download --endpoint=http://localhost:3000/graphql schema.json`
+
+Note: the server has to be running.
