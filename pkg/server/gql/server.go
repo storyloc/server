@@ -4,12 +4,13 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/graphql-go/graphql"
 	config "github.com/storyloc/server/pkg/configuration"
 	"github.com/storyloc/server/pkg/server"
 	"github.com/storyloc/server/pkg/service"
-	"net/http"
 )
 
 //go:embed index.html
@@ -17,7 +18,7 @@ var index embed.FS
 
 type postData struct {
 	Query     string                 `json:"query"`
-	Operation string                 `json:"operation"`
+	Operation string                 `json:"operationName"`
 	Variables map[string]interface{} `json:"variables"`
 }
 
@@ -64,6 +65,7 @@ func (s gqlServer) handleGraphQL(w http.ResponseWriter, r *http.Request) {
 		VariableValues: p.Variables,
 		OperationName:  p.Operation,
 	})
+
 	if err := json.NewEncoder(w).Encode(result); err != nil {
 		fmt.Printf("could not write result to response: %s", err)
 	}
