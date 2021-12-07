@@ -2,7 +2,7 @@
 
 ## Run server
 
-`go run cmd/server/main.go server --graphiql=true``
+`go run cmd/server/main.go server --graphiql=true`
 
 ## Open Browser
 
