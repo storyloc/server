@@ -19,3 +19,7 @@ func (ss StoryService) CreateStory(ts storage.Story) (*storage.Story, error) {
 func (ss StoryService) GetStory(id string) (*storage.Story, error) {
 	return ss.storyRepository.GetStory(id)
 }
+
+func (ss StoryService) AllStories() ([]*storage.Story, error) {
+	return ss.storyRepository.AllStories()
+}

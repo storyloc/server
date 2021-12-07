@@ -1,13 +1,15 @@
 package main
 
-//go:generate go run ../../pkg/schema/gen.go ../../pkg/schema
+//go:generate go run ../../pkg/schema_ipfs/gen/gen.go ../../pkg/schema_ipfs
 
 import (
 	"github.com/storyloc/server/pkg/configuration"
+	"github.com/storyloc/server/pkg/schema_graphql"
 	"github.com/storyloc/server/pkg/server"
-	"github.com/storyloc/server/pkg/server/gql"
 	"github.com/storyloc/server/pkg/service"
-	"github.com/storyloc/server/pkg/storage/file"
+	"github.com/storyloc/server/pkg/storage"
+	"github.com/storyloc/server/pkg/storage_disk"
+	"github.com/storyloc/server/pkg/storage_ipfs"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -19,7 +21,7 @@ func main() {
 		Name:  "storyLock",
 		Usage: "cli",
 	}
-	configuration := config.New()
+	configuration := *config.New()
 
 	serverCli(configuration, app)
 
@@ -29,47 +31,71 @@ func main() {
 	}
 }
 
-func serverCli(configuration *config.Configuration, app *cli.App) {
+func serverCli(configuration config.Configuration, app *cli.App) {
 	app.Commands = append(app.Commands, &cli.Command{
 		Name:  "server",
 		Usage: "start storyLock server",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				// toDo: pic random port later
-				Name:        "port",
-				EnvVars:     []string{"SL_PORT"},
+				Name:        "server-port",
+				EnvVars:     []string{"SL_SERVER_PORT"},
 				Usage:       "server port",
 				DefaultText: configuration.Server.Port,
 			},
 			&cli.BoolFlag{
-				Name:        "graphiql",
-				EnvVars:     []string{"SL_GRAPHIQL"},
-				Usage:       "enable graphiql",
+				Name:        "server-graphiql",
+				EnvVars:     []string{"SL_SERVER_GRAPHIQL"},
+				Usage:       "enable server graphiql",
 				DefaultText: strconv.FormatBool(configuration.Server.GraphiQl),
 			},
 			&cli.StringFlag{
-				Name:        "ipfs-url",
-				EnvVars:     []string{"SL_IPFS_URL"},
-				Usage:       "ipfs url",
-				DefaultText: configuration.Ipfs.Url,
+				Name:        "storage",
+				EnvVars:     []string{"SL_STORAGE"},
+				Usage:       "storage type",
+				DefaultText: configuration.Storage.Type,
+			},
+			&cli.StringFlag{
+				Name:        "storage-ipfs-url",
+				EnvVars:     []string{"SL_STORAGE_IPFS_URL"},
+				Usage:       "ipfs storage url",
+				DefaultText: configuration.Storage.Ipfs.Url,
 			},
 		},
 		Action: func(c *cli.Context) error {
 			configuration.Apply(
-				config.ServerPort(c.String("port")),
-				config.ServerGraphiQl(c.Bool("graphiql")),
-				config.IpfsUrl(c.String("ipfs-url")),
+				config.ServerPort(c.String("server-port")),
+				config.ServerGraphiQl(c.Bool("server-graphiql")),
+				config.StorageType(c.String("storage")),
+				config.StorageIpfsUrl(c.String("storage-ipfs-url")),
 			)
-			storyRepository := file.NewStoryRepository()
+
+			var profileRepository storage.ProfileRepository
+			var storyRepository storage.StoryRepository
+
+			switch configuration.Storage.Type {
+			case "ipfs":
+				storyRepository = storageIpfs.NewStoryRepository(configuration)
+				profileRepository = storageIpfs.NewProfileRepository(configuration)
+			default:
+				storyRepository = storageDisk.NewStoryRepository()
+				profileRepository = storageDisk.NewProfileRepository()
+			}
+
 			storyService := service.NewStoryService(storyRepository)
-			gqlServer, err := gql.NewServer(configuration, storyService)
+			profileService := service.NewProfileService(profileRepository)
+
+			graphqlSchema, err := schemaGraphql.NewSchema(profileService, storyService)
 			if err != nil {
 				return err
 			}
 
-			servers := []server.Server{gqlServer}
+			graphqlServer, err := server.NewGraphqlServer(configuration, graphqlSchema)
+			if err != nil {
+				return err
+			}
 
-			return server.Start(configuration, servers)
+			return server.Start(configuration, graphqlServer)
 		},
 	})
 }

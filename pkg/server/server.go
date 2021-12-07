@@ -13,7 +13,7 @@ type Server interface {
 	Routes(router *chi.Mux)
 }
 
-func Start(conf *config.Configuration, srvs []Server) error {
+func Start(conf config.Configuration, srvs ...Server) error {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 

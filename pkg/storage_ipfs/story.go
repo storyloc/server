@@ -1,4 +1,4 @@
-package ipld
+package storageIpfs
 
 import (
 	"bytes"
@@ -6,13 +6,13 @@ import (
 	shell "github.com/ipfs/go-ipfs-api"
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 	config "github.com/storyloc/server/pkg/configuration"
-	"github.com/storyloc/server/pkg/schema"
+	schema "github.com/storyloc/server/pkg/schema_ipfs"
 	"github.com/storyloc/server/pkg/storage"
 )
 
-func NewStoryRepository(conf *config.Configuration) StoryRepository {
+func NewStoryRepository(conf config.Configuration) StoryRepository {
 	return StoryRepository{
-		sh: shell.NewShell(conf.Ipfs.Url),
+		sh: shell.NewShell(conf.Storage.Ipfs.Url),
 	}
 }
 
@@ -20,7 +20,7 @@ type StoryRepository struct {
 	sh *shell.Shell
 }
 
-func (sr StoryRepository) CreateProfile(ts storage.Story) (*storage.Story, error) {
+func (sr StoryRepository) CreateStory(ts storage.Story) (*storage.Story, error) {
 	builder := schema.Type.Story.NewBuilder()
 	vb, err := json.Marshal(ts)
 	if err != nil {
@@ -34,4 +34,12 @@ func (sr StoryRepository) CreateProfile(ts storage.Story) (*storage.Story, error
 	_ = builder.Build()
 
 	return &storage.Story{Name: "toDo: transport schema Story to Story"}, nil
+}
+
+func (sr StoryRepository) GetStory(id string) (*storage.Story, error) {
+	return nil, nil
+}
+
+func (sr StoryRepository) AllStories() ([]*storage.Story, error) {
+	return nil, nil
 }

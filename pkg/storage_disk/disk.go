@@ -1,4 +1,4 @@
-package file
+package storageDisk
 
 import (
 	"errors"
@@ -15,7 +15,7 @@ func init() {
 		panic(err)
 	}
 
-	storageHome = filepath.Join(home, ".storylock")
+	storageHome = filepath.Join(home, ".storyloc")
 	if _, err := os.Stat(storageHome); errors.Is(err, os.ErrNotExist) {
 		err := os.Mkdir(storageHome, os.ModePerm)
 		if err != nil {

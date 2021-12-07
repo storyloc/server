@@ -3,8 +3,8 @@ package config
 type CClos func(c *Configuration)
 
 type Configuration struct {
-	Server Server
-	Ipfs   Ipfs
+	Server  Server
+	Storage Storage
 }
 
 func New(cs ...CClos) *Configuration {
@@ -13,8 +13,11 @@ func New(cs ...CClos) *Configuration {
 			Port:     "3000",
 			GraphiQl: false,
 		},
-		Ipfs: Ipfs{
-			Url: "localhost:5001",
+		Storage: Storage{
+			Type: "disk",
+			Ipfs: StorageIpfs{
+				Url: "localhost:5001",
+			},
 		},
 	}
 

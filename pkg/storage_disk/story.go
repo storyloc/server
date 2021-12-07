@@ -1,4 +1,4 @@
-package file
+package storageDisk
 
 import (
 	gonanoid "github.com/matoous/go-nanoid/v2"
@@ -8,12 +8,12 @@ import (
 
 func NewStoryRepository() StoryRepository {
 	return StoryRepository{
-		fs: newFileStore("story"),
+		store: newFileStore("story"),
 	}
 }
 
 type StoryRepository struct {
-	fs fileStore
+	store fileStore
 }
 
 func (sr StoryRepository) CreateStory(ts storage.Story) (*storage.Story, error) {
@@ -26,7 +26,7 @@ func (sr StoryRepository) CreateStory(ts storage.Story) (*storage.Story, error) 
 	ts.CreatedAt = time.Now()
 	ts.UpdatedAt = time.Now()
 
-	if err := sr.fs.Create(id, ts); err != nil {
+	if err := sr.store.Create(id, ts); err != nil {
 		return nil, err
 	}
 
@@ -36,9 +36,28 @@ func (sr StoryRepository) CreateStory(ts storage.Story) (*storage.Story, error) 
 func (sr StoryRepository) GetStory(id string) (*storage.Story, error) {
 	story := &storage.Story{}
 
-	if err := sr.fs.Read(id, story); err != nil {
+	if err := sr.store.Read(id, story); err != nil {
 		return nil, err
 	}
 
 	return story, nil
+}
+
+func (sr StoryRepository) AllStories() ([]*storage.Story, error) {
+	ids, err := sr.store.Ids()
+	if err != nil {
+		return nil, err
+	}
+
+	var stories []*storage.Story
+	for _, id := range ids {
+		story, err := sr.GetStory(id)
+		if err != nil {
+			return nil, err
+		}
+
+		stories = append(stories, story)
+	}
+
+	return stories, nil
 }

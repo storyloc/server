@@ -1,4 +1,4 @@
-package gql
+package server
 
 import (
 	"embed"
@@ -9,8 +9,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/graphql-go/graphql"
 	config "github.com/storyloc/server/pkg/configuration"
-	"github.com/storyloc/server/pkg/server"
-	"github.com/storyloc/server/pkg/service"
 )
 
 //go:embed index.html
@@ -22,24 +20,21 @@ type postData struct {
 	Variables map[string]interface{} `json:"variables"`
 }
 
-func NewServer(conf *config.Configuration, storyService service.StoryService) (server.Server, error) {
-	schema, err := newSchema(conf, storyService).build()
-	if err != nil {
-		return nil, err
-	}
-
-	return &gqlServer{
-		schema: schema,
-		config: conf,
-	}, nil
-}
-
 type gqlServer struct {
 	schema graphql.Schema
-	config *config.Configuration
+	config config.Configuration
 }
 
-func (s gqlServer) Routes(r *chi.Mux) {
+func NewGraphqlServer(conf config.Configuration, schema graphql.Schema) (Server, error) {
+	srv := &gqlServer{
+		config: conf,
+		schema: schema,
+	}
+
+	return srv, nil
+}
+
+func (s *gqlServer) Routes(r *chi.Mux) {
 	if s.config.Server.GraphiQl {
 		r.Get("/", s.handleGraphiQL)
 	}
