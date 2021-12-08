@@ -20,6 +20,6 @@ func Start(conf config.Configuration, srvs ...Server) error {
 	for _, srv := range srvs {
 		srv.Routes(r)
 	}
-	fmt.Printf("Server is runningon port: %s \r\n", conf.Server.Port)
+	fmt.Printf("Server is running on port: %s \r\n", conf.Server.Port)
 	return http.ListenAndServe(fmt.Sprintf(":%s", conf.Server.Port), r)
 }
