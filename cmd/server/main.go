@@ -1,26 +1,29 @@
 package main
 
-//go:generate go run ../../pkg/schema/gen/gen.go ../../pkg/schema
+//go:generate go run ../../pkg/schema_ipfs/gen/gen.go ../../pkg/schema_ipfs
 
 import (
-	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/storyloc/server/pkg/graphql"
+	"github.com/storyloc/server/pkg/configuration"
+	"github.com/storyloc/server/pkg/schema_graphql"
+	"github.com/storyloc/server/pkg/server"
+	"github.com/storyloc/server/pkg/service"
+	"github.com/storyloc/server/pkg/storage"
+	"github.com/storyloc/server/pkg/storage_disk"
+	"github.com/storyloc/server/pkg/storage_ipfs"
 	"github.com/urfave/cli/v2"
 	"log"
-	"net/http"
 	"os"
+	"strconv"
 )
 
 func main() {
 	app := &cli.App{
 		Name:  "storyLock",
 		Usage: "cli",
-		Commands: []*cli.Command{
-			server(),
-		},
 	}
+	configuration := *config.New()
+
+	serverCli(configuration, app)
 
 	err := app.Run(os.Args)
 	if err != nil {
@@ -28,23 +31,71 @@ func main() {
 	}
 }
 
-func server() *cli.Command {
-	return &cli.Command{
+func serverCli(configuration config.Configuration, app *cli.App) {
+	app.Commands = append(app.Commands, &cli.Command{
 		Name:  "server",
 		Usage: "start storyLock server",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:  "port",
-				Value: "3000",
+				// toDo: pic random port later
+				Name:        "server-port",
+				EnvVars:     []string{"SL_SERVER_PORT"},
+				Usage:       "server port",
+				DefaultText: configuration.Server.Port,
+			},
+			&cli.BoolFlag{
+				Name:        "server-graphiql",
+				EnvVars:     []string{"SL_SERVER_GRAPHIQL"},
+				Usage:       "enable server graphiql",
+				DefaultText: strconv.FormatBool(configuration.Server.GraphiQl),
+			},
+			&cli.StringFlag{
+				Name:        "storage",
+				EnvVars:     []string{"SL_STORAGE"},
+				Usage:       "storage type",
+				DefaultText: configuration.Storage.Type,
+			},
+			&cli.StringFlag{
+				Name:        "storage-ipfs-url",
+				EnvVars:     []string{"SL_STORAGE_IPFS_URL"},
+				Usage:       "ipfs storage url",
+				DefaultText: configuration.Storage.Ipfs.Url,
 			},
 		},
 		Action: func(c *cli.Context) error {
-			r := chi.NewRouter()
-			r.Use(middleware.Logger)
+			configuration.Apply(
+				config.ServerPort(c.String("server-port")),
+				config.ServerGraphiQl(c.Bool("server-graphiql")),
+				config.StorageType(c.String("storage")),
+				config.StorageIpfsUrl(c.String("storage-ipfs-url")),
+			)
 
-			graphql.Handle(r)
+			var profileRepository storage.ProfileRepository
+			var storyRepository storage.StoryRepository
 
-			return http.ListenAndServe(fmt.Sprintf(":%s", c.String("port")), r)
+			switch configuration.Storage.Type {
+			case "ipfs":
+				storyRepository = storageIpfs.NewStoryRepository(configuration)
+				profileRepository = storageIpfs.NewProfileRepository(configuration)
+			default:
+				storyRepository = storageDisk.NewStoryRepository()
+				profileRepository = storageDisk.NewProfileRepository()
+			}
+
+			storyService := service.NewStoryService(storyRepository)
+			profileService := service.NewProfileService(profileRepository)
+
+			graphqlSchema, err := schemaGraphql.NewSchema(profileService, storyService)
+			if err != nil {
+				return err
+			}
+
+			graphqlServer, err := server.NewGraphqlServer(configuration, graphqlSchema)
+			if err != nil {
+				return err
+			}
+
+			return server.Start(configuration, graphqlServer)
 		},
-	}
+	})
 }

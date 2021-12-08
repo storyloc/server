@@ -1,0 +1,10 @@
+---
+version: "3.7"
+
+services:
+  ipfs:
+    image: ipfs/go-ipfs:${IPFS_DOCKER_TAG:-latest}
+    ports:
+      - "4001:4001"
+      - "8080:8080"
+      - "5001:5001"
