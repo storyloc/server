@@ -185,5 +185,5 @@ func main() {
 		panic("not happening")
 	}
 
-	gengo.Generate(os.Args[1], "schemaIpfs", ts, adjCfg)
+	gengo.Generate(os.Args[1], "ipld", ts, adjCfg)
 }

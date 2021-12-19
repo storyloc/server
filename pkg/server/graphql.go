@@ -2,30 +2,22 @@ package server
 
 import (
 	"embed"
-	"encoding/json"
-	"fmt"
-	"net/http"
-
+	"github.com/99designs/gqlgen/graphql"
+	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/go-chi/chi/v5"
-	"github.com/graphql-go/graphql"
 	config "github.com/storyloc/server/pkg/configuration"
+	"net/http"
 )
 
 //go:embed index.html
 var index embed.FS
 
-type postData struct {
-	Query     string                 `json:"query"`
-	Operation string                 `json:"operationName"`
-	Variables map[string]interface{} `json:"variables"`
-}
-
 type gqlServer struct {
-	schema graphql.Schema
+	schema graphql.ExecutableSchema
 	config config.Configuration
 }
 
-func NewGraphqlServer(conf config.Configuration, schema graphql.Schema) (Server, error) {
+func NewGraphqlServer(conf config.Configuration, schema graphql.ExecutableSchema) (Server, error) {
 	srv := &gqlServer{
 		config: conf,
 		schema: schema,
@@ -48,20 +40,6 @@ func (s gqlServer) handleGraphiQL(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s gqlServer) handleGraphQL(w http.ResponseWriter, r *http.Request) {
-	var p postData
-	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
-		w.WriteHeader(400)
-		return
-	}
-
-	result := graphql.Do(graphql.Params{
-		Schema:         s.schema,
-		RequestString:  p.Query,
-		VariableValues: p.Variables,
-		OperationName:  p.Operation,
-	})
-
-	if err := json.NewEncoder(w).Encode(result); err != nil {
-		fmt.Printf("could not write result to response: %s", err)
-	}
+	h := handler.NewDefaultServer(s.schema)
+	h.ServeHTTP(w, r)
 }
