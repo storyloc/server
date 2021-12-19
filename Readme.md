@@ -22,13 +22,13 @@ query getStories {
   }
 }
 
-query getNameById($userId: String!) {
+query getNameById($userId: ID!) {
   profile(id: $userId) {
     name
   }
 }
 
-query getProfile($userId: String!) {
+query getProfile($userId: ID!) {
   profile(id: $userId) {
     id
     name
@@ -43,7 +43,7 @@ mutation createProfile($userName:String!) {
   }
 }
 
-mutation createStory($storyName:String!, $userId:String!) {
+mutation createStory($storyName:String!, $userId:ID!) {
   createStory(
     input:{
       name: $storyName,
@@ -89,7 +89,7 @@ Remove this folder to clean data.
 
 # Download schema for Clients
 
-To download the schema install Apollo CLI.
+To download the schema install [Apollo CLI](https://github.com/apollographql/apollo-tooling). 
 On macOS use `brew install apollo-cli`, there are some fixed issued included. 
 
 Donwload schema.json by running
