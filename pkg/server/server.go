@@ -21,7 +21,7 @@ func Start(conf config.Configuration, srvs ...Server) error {
 	for _, srv := range srvs {
 		srv.Routes(r)
 	}
-	
+
 	log.Printf("open http://localhost:%s/", conf.Server.Port)
 	return http.ListenAndServe(fmt.Sprintf(":%s", conf.Server.Port), r)
 }
