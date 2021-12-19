@@ -6,7 +6,14 @@ type Query {
 
 type Mutation {
 	createProfile(input: ProfileInput!): Profile
+	createTag(input: TagInput!): Tag
 	createStory(input: StoryInput!): Story
+	deleteStory(id ID!)
+	createStoryPoint(input: StoryPointInput!): StoryPoint
+	deleteStoryPoint(id ID!)
+	createRecording(input: RecordingInput!): Recording
+	deleteRecording(id: ID!)
+	updateTags(input: UpdateStoryPointTagsInput!)
 }
 
 type Profile {
@@ -14,8 +21,15 @@ type Profile {
 	name: String!
 	stories: [Story]
 }
-
 input ProfileInput {
+	name: String!
+}
+
+type Tag {
+	id: ID!
+	name: String!
+}
+input TagInput {
 	name: String!
 }
 
@@ -23,9 +37,45 @@ type Story {
 	id: ID!
 	name: String!
 	owner: Profile!
+	collection: [StoryPoint]
 }
-
 input StoryInput {
 	name: String!
 	ownerId: ID!
+}
+
+type Location {
+	latitude: Double!
+	longitude: Double!
+}
+
+type StoryPoint {
+	id: ID!
+	owner: Profile!
+	image: String!
+	recordings: [Recording]
+	location: Location!
+}
+input StoryPointInput {
+	name: String!
+	ownerId: ID!
+	image: Data!
+	location: Location!
+}
+
+type Recording {
+	id: ID!
+	storyPointId: ID!
+	title: String!
+	data: Data!
+}
+input RecordingInput {
+	title: String!
+	storyPointId: ID!
+	data: Data!
+}
+
+input UpdateStoryPointTagsInput {
+	storyPointId: ID!
+	tags: [Tag]
 }
