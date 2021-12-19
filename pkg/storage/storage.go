@@ -14,17 +14,17 @@ type ProfileRepository interface {
 }
 
 type Story struct {
-	Id        string
-	Name      string
-	OwnerId   string
-	Owner     Profile
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	OwnerID   string `json:"owner"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type Profile struct {
-	Id        string
-	Name      string
+	Id        string   `json:"id"`
+	Name      string   `json:"name"`
+	StoryIDs  []string `json:"stories"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

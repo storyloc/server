@@ -1,7 +1,5 @@
 package main
 
-//go:generate go run ../../pkg/schema_ipfs/gen/gen.go ../../pkg/schema_ipfs
-
 import (
 	"github.com/storyloc/server/pkg/configuration"
 	"github.com/storyloc/server/pkg/schema_graphql"
@@ -85,11 +83,7 @@ func serverCli(configuration config.Configuration, app *cli.App) {
 			storyService := service.NewStoryService(storyRepository)
 			profileService := service.NewProfileService(profileRepository)
 
-			graphqlSchema, err := schemaGraphql.NewSchema(profileService, storyService)
-			if err != nil {
-				return err
-			}
-
+			graphqlSchema := graphql.NewSchema(profileService, storyService)
 			graphqlServer, err := server.NewGraphqlServer(configuration, graphqlSchema)
 			if err != nil {
 				return err
