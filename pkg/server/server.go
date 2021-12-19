@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -20,6 +21,7 @@ func Start(conf config.Configuration, srvs ...Server) error {
 	for _, srv := range srvs {
 		srv.Routes(r)
 	}
-	fmt.Printf("Server is runningon port: %s \r\n", conf.Server.Port)
+
+	log.Printf("open http://localhost:%s/", conf.Server.Port)
 	return http.ListenAndServe(fmt.Sprintf(":%s", conf.Server.Port), r)
 }

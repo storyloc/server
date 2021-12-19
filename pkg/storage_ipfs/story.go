@@ -6,7 +6,7 @@ import (
 	shell "github.com/ipfs/go-ipfs-api"
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 	config "github.com/storyloc/server/pkg/configuration"
-	schema "github.com/storyloc/server/pkg/schema_ipfs"
+	schema "github.com/storyloc/server/pkg/schema_ipld"
 	"github.com/storyloc/server/pkg/storage"
 )
 

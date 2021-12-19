@@ -1,0 +1,29 @@
+schema:
+  - ./*.graphqls
+exec:
+  filename: ./generated/generated.go
+  package: generated
+model:
+  filename: ./model/models_gen.go
+  package: model
+resolver:
+  layout: follow-schema
+  package: graphql
+autobind:
+  - "github.com/storyloc/server/schema_graphql/model"
+models:
+  Story:
+    model: github.com/storyloc/server/pkg/storage.Story
+  Profile:
+    model: github.com/storyloc/server/pkg/storage.Profile
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
