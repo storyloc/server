@@ -1,0 +1,12 @@
+type Recording {
+	id: ID!
+	storyPoint: StoryPoint!
+	title: String!
+	data: String!
+}
+
+input RecordingInput {
+	title: String!
+	storyPointId: ID!
+	data: String!
+}

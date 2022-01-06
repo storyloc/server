@@ -1,0 +1,9 @@
+type Profile {
+	id: ID!
+	name: String!
+	stories: [Story]
+}
+
+input ProfileInput {
+	name: String!
+}

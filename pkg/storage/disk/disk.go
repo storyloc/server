@@ -1,4 +1,4 @@
-package storageDisk
+package disk
 
 import (
 	"errors"

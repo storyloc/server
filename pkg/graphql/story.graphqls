@@ -1,0 +1,11 @@
+type Story {
+	id: ID!
+	name: String!
+	owner: Profile!
+	collection: [StoryPoint]
+}
+
+input StoryInput {
+	name: String!
+	ownerId: ID!
+}

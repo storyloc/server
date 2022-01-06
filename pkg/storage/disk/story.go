@@ -1,9 +1,8 @@
-package storageDisk
+package disk
 
 import (
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/storyloc/server/pkg/storage"
-	"time"
 )
 
 func NewStoryRepository() StoryRepository {
@@ -23,8 +22,6 @@ func (sr StoryRepository) CreateStory(ts storage.Story) (*storage.Story, error) 
 	}
 
 	ts.Id = id
-	ts.CreatedAt = time.Now()
-	ts.UpdatedAt = time.Now()
 
 	if err := sr.store.Create(id, ts); err != nil {
 		return nil, err
