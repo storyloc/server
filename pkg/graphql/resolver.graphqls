@@ -1,0 +1,26 @@
+type Query {
+	profile(id: ID!): Profile
+	story(id: ID!): Story
+	stories: [Story]
+}
+
+type Mutation {
+	createProfile(input: ProfileInput!): Profile
+	createStory(input: StoryInput!): Story
+	deleteStory(id: ID!): Story
+	createStoryPoint(input: StoryPointInput!): StoryPoint
+	deleteStoryPoint(id: ID!): StoryPoint
+	createTag(input: TagInput!): Tag
+	createRecording(input: RecordingInput!): Recording
+	deleteRecording(id: ID!): Recording
+}
+
+type Location {
+	latitude: Float!
+	longitude: Float!
+}
+
+input LocationInput {
+	latitude: Float!
+	longitude: Float!
+}

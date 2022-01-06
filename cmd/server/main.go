@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/storyloc/server/pkg/configuration"
-	"github.com/storyloc/server/pkg/schema_graphql"
+	"github.com/storyloc/server/pkg/graphql"
 	"github.com/storyloc/server/pkg/server"
 	"github.com/storyloc/server/pkg/service"
 	"github.com/storyloc/server/pkg/storage"
-	"github.com/storyloc/server/pkg/storage_disk"
-	"github.com/storyloc/server/pkg/storage_ipfs"
+	diskStorage "github.com/storyloc/server/pkg/storage/disk"
+	ipfsStorage "github.com/storyloc/server/pkg/storage/ipfs"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -73,11 +73,11 @@ func serverCli(configuration config.Configuration, app *cli.App) {
 
 			switch configuration.Storage.Type {
 			case "ipfs":
-				storyRepository = storageIpfs.NewStoryRepository(configuration)
-				profileRepository = storageIpfs.NewProfileRepository(configuration)
+				storyRepository = ipfsStorage.NewStoryRepository(configuration)
+				profileRepository = ipfsStorage.NewProfileRepository(configuration)
 			default:
-				storyRepository = storageDisk.NewStoryRepository()
-				profileRepository = storageDisk.NewProfileRepository()
+				storyRepository = diskStorage.NewStoryRepository()
+				profileRepository = diskStorage.NewProfileRepository()
 			}
 
 			storyService := service.NewStoryService(storyRepository)

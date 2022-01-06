@@ -1,0 +1,8 @@
+type Tag {
+	id: ID!
+	name: String!
+}
+
+input TagInput {
+	name: String!
+}

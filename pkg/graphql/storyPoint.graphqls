@@ -1,0 +1,14 @@
+type StoryPoint {
+	id: ID!
+	owner: Profile!
+	image: String!
+	recordings: [Recording]
+	location: Location!
+}
+
+input StoryPointInput {
+	name: String!
+	ownerId: ID!
+	image: String!
+	location: LocationInput!
+}

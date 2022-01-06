@@ -1,4 +1,4 @@
-package storageIpfs
+package ipfs
 
 import (
 	shell "github.com/ipfs/go-ipfs-api"
